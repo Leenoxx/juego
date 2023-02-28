@@ -20,7 +20,7 @@ def game():
 
     ball = pygame.image.load("imagenes/ball.png")
     ballrect = ball.get_rect()
-    speed = [5, 5]
+    speed = [6, 6]
     ballrect.move_ip(200, 200)
 
     letra = pygame.image.load("imagenes/letra.png")
@@ -73,6 +73,12 @@ def game():
             ballrect = ballrect.move(speed)
             if baterect.colliderect(ballrect):
                 speed[1] = -speed[1]
+                if speed[0] < 5 and speed[1] < 5:
+                    speed[0] += 1
+                    if speed[1] < 0:
+                        speed[1] -= 1
+                    else:
+                        speed[1] += 1
             if ballrect.left < 0 or ballrect.right > ventana.get_width():
                 speed[0] = -speed[0]
             if ballrect.top < 0:
@@ -87,9 +93,9 @@ def game():
             # Comprueba si se ha pulsado alguna tecla
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT] and baterect.left > 0:  # Mueve el bate hacia la izquierda
-                baterect = baterect.move(-5, 0)
+                baterect = baterect.move(-8, 0)
             if keys[pygame.K_RIGHT] and baterect.right < 640:  # Mueve el bate hacia la Derecha
-                baterect = baterect.move(5, 0)
+                baterect = baterect.move(8, 0)
 
         for event in pygame.event.get():  # Comprobamos los eventos
             if event.type == pygame.QUIT:  # Comprobamos si se ha pulsado el botón de cierre de la ventana
