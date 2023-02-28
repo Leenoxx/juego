@@ -3,6 +3,7 @@ import time
 import botones
 import moviepy.editor
 
+
 pygame.init()
 ventana = pygame.display.set_mode((640, 500))
 pygame.display.set_caption("JUEGAZO")
@@ -12,6 +13,7 @@ def game():
     import ladrillo
 
     game_paused = False
+    game_win = False
 
     resume_img = pygame.image.load("imagenes/button_resume.png")
     resume = botones.Button(230, 125, resume_img)
@@ -102,25 +104,32 @@ def game():
             video = moviepy.editor.VideoFileClip("sonidos/yay.mp4")  # Carga el video
             video.preview()  # Reproduce el video
             jugando = False
+            game_win = True
 
         pygame.display.flip()  # Refrescar la pantalla
         pygame.time.Clock().tick(60)  # Controlamos la frecuencia de refresco (FPS)
+    return game_win
 
 
-def gameover():
-    jugando = True
-    while jugando:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                jugando = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_y:
-                    game()
-                if event.key == pygame.K_n:
-                    jugando = False
+def gameover(estado):
+    if estado is False:
+        jugar = True
+        while jugar:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    jugar = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_y:
+                        game()
+                    if event.key == pygame.K_n:
+                        jugar = False
+    elif estado is True:
+        jugar = True
+        while jugar:
+            jugar = False
 
 
-game()
-gameover()
-time.sleep(2)
+estado_juego = game()
+gameover(estado_juego)
+time.sleep(0.5)
 pygame.quit()
